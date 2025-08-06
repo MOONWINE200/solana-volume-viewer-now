@@ -16,7 +16,8 @@ h2 { color: #333; }
 <body>
 
 <h2>Solana Token 每日交易量查询</h2>
-<p>输入 Solana 代币合约地址，点击“获取数据”即可查看每日交易量（USDT）趋势。</p>
+<p>输入 Solana 代币合约地址，点击“获取数据”即可查看每日交易量（USDT）趋势。  
+页面初始会自动加载 Valentine 数据。</p>
 
 <input id="tokenAddress" placeholder="输入 Solana 代币合约地址" value="9GtvcnDUvGsuibktxiMjLQ2yyBq5akUahuBs8yANbonk">
 <button onclick="getVolume()">获取数据</button>
@@ -46,55 +47,4 @@ async function getVolume() {
 
         // 2. 获取每日交易量数据
         let chartRes = await fetch(`https://api.dexscreener.com/charts/v1/${chainId}/${pairId}?resolution=1d`);
-        let chartJson = await chartRes.json();
-
-        let timestamps = chartJson.t;
-        let volumes = chartJson.v;
-
-        if (!timestamps || !volumes) {
-            alert("未获取到成交量数据");
-            return;
-        }
-
-        let dates = timestamps.map(ts => new Date(ts * 1000).toLocaleDateString());
-        let volumeUSD = volumes.map(v => Math.round(v));
-
-        // 3. 绘制图表
-        let ctx = document.getElementById('volumeChart').getContext('2d');
-        if (window.volumeChartInstance) {
-            window.volumeChartInstance.destroy();
-        }
-        window.volumeChartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dates,
-                datasets: [{
-                    label: '每日交易量 (USD)',
-                    data: volumeUSD,
-                    borderColor: 'blue',
-                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                    fill: true
-                }]
-            }
-        });
-
-        // 4. 生成表格
-        let tableHTML = "<table><tr><th>日期</th><th>交易量 (USD)</th></tr>";
-        for (let i = 0; i < dates.length; i++) {
-            tableHTML += `<tr><td>${dates[i]}</td><td>${volumeUSD[i].toLocaleString()}</td></tr>`;
-        }
-        tableHTML += "</table>";
-        document.getElementById('dataTable').innerHTML = tableHTML;
-
-    } catch (error) {
-        console.error(error);
-        alert("获取数据时出错，请稍后重试");
-    }
-}
-
-// 页面加载后自动运行
-window.onload = getVolume;
-</script>
-
-</body>
-</html>
+        let chartJson = a
